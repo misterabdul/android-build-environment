@@ -6,7 +6,8 @@ LABEL author "Abdul Pasaribu <abdoelrachmad@gmail.com>"
 RUN apk update
 
 # Install all necessary packages
-RUN apk add openjdk11 \
+RUN apk add libstdc++ \
+  openjdk11 \
   git \
   curl \
   openssh \
