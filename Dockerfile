@@ -1,25 +1,32 @@
-FROM frolvlad/alpine-glibc:alpine-3.13_glibc-2.33
+FROM ubuntu:20.04
 
 LABEL author "Abdul Pasaribu <abdoelrachmad@gmail.com>"
 
+# Set the timezone
+ENV TZ Asia/Jakarta
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Update current packages
-RUN apk update
+RUN apt-get update --fix-missing -y && \
+  apt-get upgrade -y
 
 # Install all necessary packages
-RUN apk add libstdc++ \
-  openjdk11 \
+RUN apt-get install -y libstdc++6 \
+  openjdk-11-jdk \
+  wget \
   git \
   curl \
-  openssh \
-  rsync
+  openssh-client \
+  rsync \
+  unzip
 
 # Increase Java heap size
 ENV JAVA_OPTS "-Xms4096m -Xmx4096m"
 
 # Create android builder ci user account
-RUN adduser -g 'Android Builder CI' \
-  -s '/bin/sh' \
-  -D "android-builder-ci"
+RUN adduser --gecos 'Android Builder CI' \
+  --shell '/bin/sh' \
+  --disabled-login "android-builder-ci"
 
 # Use that user
 USER android-builder-ci
