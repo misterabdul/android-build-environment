@@ -3,10 +3,11 @@ FROM frolvlad/alpine-glibc:alpine-3.13_glibc-2.33
 LABEL author "Abdul Pasaribu <abdoelrachmad@gmail.com>"
 
 # Update current packages
-RUN apk update
+RUN apk update && apk upgrade
 
 # Install all necessary packages
-RUN apk add openjdk11 \
+RUN apk add libstdc++ \
+  openjdk11 \
   git \
   curl \
   openssh \
